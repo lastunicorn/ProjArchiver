@@ -27,7 +27,7 @@ namespace DustInTheWind.ProjArchiver
 
         public Stream OpenFileToWrite(string fileFullPath)
         {
-            return File.Open(fileFullPath, FileMode.CreateNew, FileAccess.Write);
+            return File.Open(fileFullPath, FileMode.Create, FileAccess.Write);
         }
 
         public bool ExistsDirectory(string directoryFullPath)
@@ -38,6 +38,16 @@ namespace DustInTheWind.ProjArchiver
         public void RemoveDirectory(string directoryFullPath)
         {
             Directory.Delete(directoryFullPath, true);
+        }
+
+        public void DeleteFile(string fileFullPath)
+        {
+            File.Delete(fileFullPath);
+        }
+
+        public bool ExistsFile(string fileFullPath)
+        {
+            return File.Exists(fileFullPath);
         }
     }
 }

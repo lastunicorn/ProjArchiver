@@ -27,7 +27,7 @@ namespace DustInTheWind.ProjArchiver
         private readonly IStorage storage;
         private readonly Config config;
 
-        public ArchiverService(Config config, IStorage storage, IFileCompressor fileCompressor )
+        public ArchiverService(Config config, IStorage storage, IFileCompressor fileCompressor)
         {
             this.config = config;
             this.storage = storage;
@@ -39,18 +39,37 @@ namespace DustInTheWind.ProjArchiver
             logger.Debug("Archive start");
 
             if (config.ArchivesDirectory == null)
-                throw new ProjArchiveException(Resources.Err_ArchiveDirectoryNotSet);
+                throw new ProjArchiveException(Resources.Err_ArchivesDirectoryNotSpecified);
 
-            Archiver helper = new Archiver(storage, fileCompressor)
+            Archiver archiver = new Archiver(storage, fileCompressor)
             {
                 ArchivesDirectoryFullPath = config.ArchivesDirectory,
                 ProjectDirectoryFullPath = projectDirectoryFullPath,
                 Description = description
             };
 
-            helper.Archive();
+            archiver.Archive();
 
             logger.Debug("Archive end");
+        }
+
+        public void Restore(string projectName, string workDirectoryFullPath)
+        {
+            logger.Debug("Restore start");
+
+            if (config.ArchivesDirectory == null)
+                throw new ProjArchiveException(Resources.Err_ArchivesDirectoryNotSpecified);
+
+            Restorer restorer = new Restorer(storage, fileCompressor)
+            {
+                ArchivesDirectoryFullPath = config.ArchivesDirectory,
+                WorkDirectoryFullPath = workDirectoryFullPath,
+                ProjectName = projectName
+            };
+
+            restorer.Restore();
+
+            logger.Debug("Restore end");
         }
     }
 }

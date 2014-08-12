@@ -117,13 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Err_ArchiveDirectoryNotSet" xml:space="preserve">
-    <value>The archive root directory was not specified.</value>
-  </data>
-  <data name="Err_ProjectArchiveDirectoryAlreadyExists" xml:space="preserve">
+  <data name="Err_ArchiveAlreadyExists" xml:space="preserve">
     <value>An archive with the same name already exists.</value>
+  </data>
+  <data name="Err_ArchivesDirectoryNotSpecified" xml:space="preserve">
+    <value>The ArchivesDirectoryFullPath was not specified.</value>
+  </data>
+  <data name="Err_ProjectAlreadyExists" xml:space="preserve">
+    <value>The project with the same name is already uncompressed.</value>
   </data>
   <data name="Err_ProjectDirectoryNotSpecified" xml:space="preserve">
     <value>ProjectDirectoryFullPath was not specified.</value>
+  </data>
+  <data name="Err_ProjectNameNotSpecified" xml:space="preserve">
+    <value>The ProjectName was not specified.</value>
+  </data>
+  <data name="Err_WorkDirectoryNotSpecified" xml:space="preserve">
+    <value>The WorkDirectoryFullPath was not specified.</value>
   </data>
 </root>

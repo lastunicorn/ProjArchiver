@@ -20,9 +20,19 @@ namespace DustInTheWind.ProjArchiver
 {
     public class FileCompressor : IFileCompressor
     {
+        public string DefaultExtension
+        {
+            get { return ".zip"; }
+        }
+
         public void Compress(string sourceDirectoryFullPath, string destinationArchiveFileFullPath)
         {
             ZipFile.CreateFromDirectory(sourceDirectoryFullPath, destinationArchiveFileFullPath, CompressionLevel.Optimal, true);
+        }
+
+        public void Decompress(string sourceArchiveFileFullPath, string destinationDirectoryFullPath)
+        {
+            ZipFile.ExtractToDirectory(sourceArchiveFileFullPath, destinationDirectoryFullPath);
         }
     }
 }

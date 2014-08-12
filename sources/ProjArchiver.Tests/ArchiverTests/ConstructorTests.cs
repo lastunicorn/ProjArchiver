@@ -14,12 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.ProjArchiver
+using System;
+using Moq;
+using Xunit;
+
+namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
 {
-    public interface IFileCompressor
+    public class ConstructorTests
     {
-        string DefaultExtension { get; }
-        void Compress(string sourceDirectoryFullPath, string destinationArchiveFileFullPath);
-        void Decompress(string sourceArchiveFileFullPath, string destinationDirectoryFullPath);
+        [Fact]
+        public void throws_if_storage_is_null()
+        {
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => new Archiver(null, new Mock<IFileCompressor>().Object));
+
+            Assert.Equal("storage", exception.ParamName);
+        }
+
+        [Fact]
+        public void throws_if_fileCompressor_is_null()
+        {
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => new Archiver(new Mock<IStorage>().Object, null));
+
+            Assert.Equal("fileCompressor", exception.ParamName);
+        }
     }
 }

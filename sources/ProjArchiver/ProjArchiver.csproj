@@ -49,6 +49,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Archiver.cs" />
     <Compile Include="FileCompressor.cs" />
+    <Compile Include="Restorer.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="IFileCompressor.cs" />
     <Compile Include="IStorage.cs" />

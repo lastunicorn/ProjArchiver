@@ -14,9 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.IO;
 using System.Xml.Serialization;
 using DustInTheWind.ProjArchiver.Properties;
+using JetBrains.Annotations;
 using NLog;
 
 namespace DustInTheWind.ProjArchiver
@@ -37,16 +39,22 @@ namespace DustInTheWind.ProjArchiver
 
         public Archiver(IStorage storage, IFileCompressor fileCompressor)
         {
+            if (storage == null)
+                throw new ArgumentNullException("storage");
+
+            if (fileCompressor == null)
+                throw new ArgumentNullException("fileCompressor");
+
             this.storage = storage;
             this.fileCompressor = fileCompressor;
         }
 
         public void Archive()
         {
-            if (ArchivesDirectoryFullPath == null)
-                throw new ProjArchiveException(Resources.Err_ArchiveDirectoryNotSet);
+            if (string.IsNullOrEmpty(ArchivesDirectoryFullPath))
+                throw new ProjArchiveException(Resources.Err_ArchivesDirectoryNotSpecified);
 
-            if (ProjectDirectoryFullPath == null)
+            if (string.IsNullOrEmpty(ProjectDirectoryFullPath))
                 throw new ProjArchiveException(Resources.Err_ProjectDirectoryNotSpecified);
 
             logger.Info("Archiving project '{0}'.", ProjectDirectoryFullPath);
@@ -64,17 +72,19 @@ namespace DustInTheWind.ProjArchiver
         {
             logger.Info("Creating archive directory: '{0}'.", projectArchiveDirectoryFullPath);
 
-            if (storage.ExistsDirectory(projectArchiveDirectoryFullPath))
-                throw new ProjArchiveException(Resources.Err_ProjectArchiveDirectoryAlreadyExists);
-
-            storage.CreateDirectory(projectArchiveDirectoryFullPath);
+            if (!storage.ExistsDirectory(projectArchiveDirectoryFullPath))
+                //throw new ProjArchiveException(Resources.Err_ProjectArchiveDirectoryAlreadyExists);
+                storage.CreateDirectory(projectArchiveDirectoryFullPath);
         }
 
         private void CreateArchiveFile()
         {
-            string archiveFileFullPath = Path.Combine(projectArchiveDirectoryFullPath, projectDirectoryName + ".zip");
+            string archiveFileFullPath = Path.Combine(projectArchiveDirectoryFullPath, projectDirectoryName + fileCompressor.DefaultExtension);
 
-            logger.Info("Creating archive file: '{0}'.", archiveFileFullPath);
+            if (storage.ExistsFile(archiveFileFullPath))
+                throw new ProjArchiveException(Resources.Err_ArchiveAlreadyExists);
+
+            logger.Info("Creating compressed file: '{0}'.", archiveFileFullPath);
 
             fileCompressor.Compress(ProjectDirectoryFullPath, archiveFileFullPath);
         }

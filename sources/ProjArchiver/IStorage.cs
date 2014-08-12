@@ -24,5 +24,7 @@ namespace DustInTheWind.ProjArchiver
         Stream OpenFileToWrite(string fileFullPath);
         bool ExistsDirectory(string directoryFullPath);
         void RemoveDirectory(string directoryFullPath);
+        void DeleteFile(string fileFullPath);
+        bool ExistsFile(string fileFullPath);
     }
 }

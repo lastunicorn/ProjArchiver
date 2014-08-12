@@ -15,40 +15,69 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.IO;
+using DustInTheWind.ProjArchiver.Properties;
 using Moq;
 using Xunit;
 
-namespace DustInTheWind.ProjArchiver.Tests.ArchiverServiceTests
+namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
 {
-    public class ArchiverTests
+    public class ArchiveTests
     {
         private readonly Mock<IStorage> storage;
         private readonly Archiver archiver;
         private readonly Mock<IFileCompressor> fileCompressor;
 
-        public ArchiverTests()
+        public ArchiveTests()
         {
             storage = new Mock<IStorage>();
             fileCompressor = new Mock<IFileCompressor>();
+            fileCompressor.SetupGet(x => x.DefaultExtension).Returns(".zip");
+
             archiver = new Archiver(storage.Object, fileCompressor.Object);
         }
 
         [Fact]
-        public void throws_if_ArchiveDirectory_is_not_set()
+        public void throws_if_ArchiveDirectory_is_null()
         {
+            archiver.ArchivesDirectoryFullPath = null;
             archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
+
             ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
 
-            Assert.Equal(DustInTheWind.ProjArchiver.Properties.Resources.Err_ArchiveDirectoryNotSet, exception.Message);
+            Assert.Equal(Resources.Err_ArchivesDirectoryNotSpecified, exception.Message);
         }
 
         [Fact]
-        public void throws_if_ProjectDirectory_is_not_set()
+        public void throws_if_ArchiveDirectory_is_empty_string()
         {
-            archiver.ArchivesDirectoryFullPath = @"d:\Archives";
+            archiver.ArchivesDirectoryFullPath = string.Empty;
+            archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
+
             ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
 
-            Assert.Equal(DustInTheWind.ProjArchiver.Properties.Resources.Err_ProjectDirectoryNotSpecified, exception.Message);
+            Assert.Equal(Resources.Err_ArchivesDirectoryNotSpecified, exception.Message);
+        }
+
+        [Fact]
+        public void throws_if_ProjectDirectory_is_null()
+        {
+            archiver.ArchivesDirectoryFullPath = @"d:\Archives";
+            archiver.ProjectDirectoryFullPath = null;
+
+            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
+
+            Assert.Equal(Resources.Err_ProjectDirectoryNotSpecified, exception.Message);
+        }
+
+        [Fact]
+        public void throws_if_ProjectDirectory_is_empty_string()
+        {
+            archiver.ArchivesDirectoryFullPath = @"d:\Archives";
+            archiver.ProjectDirectoryFullPath = string.Empty;
+
+            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
+
+            Assert.Equal(Resources.Err_ProjectDirectoryNotSpecified, exception.Message);
         }
 
         [Fact]
@@ -66,17 +95,17 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverServiceTests
         }
 
         [Fact]
-        public void throws_if_ProjectArchiveDirectory_already_exists()
+        public void throws_if_ProjectArchiveFile_already_exists()
         {
             storage.Setup(x => x.OpenFileToWrite(It.IsAny<string>())).Returns(Stream.Null);
-            storage.Setup(x => x.ExistsDirectory(@"d:\Archives\MyProject"))
+            storage.Setup(x => x.ExistsFile(@"d:\Archives\MyProject\MyProject.zip"))
                 .Returns(true);
             archiver.ArchivesDirectoryFullPath = @"d:\Archives";
             archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
 
             ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
 
-            Assert.Equal(DustInTheWind.ProjArchiver.Properties.Resources.Err_ProjectArchiveDirectoryAlreadyExists, exception.Message);
+            Assert.Equal(DustInTheWind.ProjArchiver.Properties.Resources.Err_ArchiveAlreadyExists, exception.Message);
         }
 
         [Fact]
@@ -95,6 +124,7 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverServiceTests
         public void uses_fileCompressor_to_compress_the_project_directory()
         {
             storage.Setup(x => x.OpenFileToWrite(It.IsAny<string>())).Returns(Stream.Null);
+            fileCompressor.SetupGet(x => x.DefaultExtension).Returns(".zip");
             archiver.ArchivesDirectoryFullPath = @"d:\Archives";
             archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
 
@@ -124,6 +154,8 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverServiceTests
         public void deletes_project_directory()
         {
             storage.Setup(x => x.OpenFileToWrite(It.IsAny<string>())).Returns(Stream.Null);
+            storage.Setup(x => x.ExistsFile(@"d:\Archives\MyProject\MyProject.zip"))
+                .Returns(false);
             archiver.ArchivesDirectoryFullPath = @"d:\Archives";
             archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
 

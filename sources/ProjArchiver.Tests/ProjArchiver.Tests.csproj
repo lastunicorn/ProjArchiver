@@ -45,8 +45,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArchiverServiceTests\ArchiverTests.cs" />
+    <Compile Include="ArchiverTests\ArchiveTests.cs" />
+    <Compile Include="ArchiverTests\ConstructorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestorerTests\ConstructorTests.cs" />
+    <Compile Include="RestorerTests\RestoreTests.cs" />
     <Compile Include="XmlAsserter.cs" />
   </ItemGroup>
   <ItemGroup>

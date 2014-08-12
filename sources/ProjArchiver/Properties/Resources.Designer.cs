@@ -61,20 +61,29 @@ namespace DustInTheWind.ProjArchiver.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The archive root directory was not specified..
+        ///   Looks up a localized string similar to An archive with the same name already exists..
         /// </summary>
-        internal static string Err_ArchiveDirectoryNotSet {
+        internal static string Err_ArchiveAlreadyExists {
             get {
-                return ResourceManager.GetString("Err_ArchiveDirectoryNotSet", resourceCulture);
+                return ResourceManager.GetString("Err_ArchiveAlreadyExists", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An archive with the same name already exists..
+        ///   Looks up a localized string similar to The ArchivesDirectoryFullPath was not specified..
         /// </summary>
-        internal static string Err_ProjectArchiveDirectoryAlreadyExists {
+        internal static string Err_ArchivesDirectoryNotSpecified {
             get {
-                return ResourceManager.GetString("Err_ProjectArchiveDirectoryAlreadyExists", resourceCulture);
+                return ResourceManager.GetString("Err_ArchivesDirectoryNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The project with the same name is already uncompressed..
+        /// </summary>
+        internal static string Err_ProjectAlreadyExists {
+            get {
+                return ResourceManager.GetString("Err_ProjectAlreadyExists", resourceCulture);
             }
         }
         
@@ -84,6 +93,24 @@ namespace DustInTheWind.ProjArchiver.Properties {
         internal static string Err_ProjectDirectoryNotSpecified {
             get {
                 return ResourceManager.GetString("Err_ProjectDirectoryNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ProjectName was not specified..
+        /// </summary>
+        internal static string Err_ProjectNameNotSpecified {
+            get {
+                return ResourceManager.GetString("Err_ProjectNameNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The WorkDirectoryFullPath was not specified..
+        /// </summary>
+        internal static string Err_WorkDirectoryNotSpecified {
+            get {
+                return ResourceManager.GetString("Err_WorkDirectoryNotSpecified", resourceCulture);
             }
         }
     }

@@ -40,7 +40,36 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp
                 FileCompressor fileCompressor = new FileCompressor();
 
                 ArchiverService archiverService = new ArchiverService(config, storage, fileCompressor);
-                archiverService.Archive(@"c:\temp\projects\myproj", "bla bla bla");
+
+                if (args.Length == 0)
+                {
+                    DisplayHelp();
+                }
+                else
+                {
+                    if (args[0] == "-r" || args[0] == "--restore")
+                    {
+                        if (args.Length >= 3)
+                            archiverService.Restore(args[1], args[2]);
+                        else
+                            DisplayHelp();
+
+                        //archiverService.Restore("myproj", @"c:\temp\projects");
+                    }
+                    else if (args[0] == "-a" || args[0] == "--archive")
+                    {
+                        if (args.Length >= 3)
+                            archiverService.Archive(args[1], args[2]);
+                        else
+                            DisplayHelp();
+
+                        //archiverService.Archive(@"c:\temp\projects\myproj", "bla bla bla");
+                    }
+                    else
+                    {
+                        DisplayHelp();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -50,7 +79,12 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp
             Console.WriteLine();
             Console.WriteLine("Bye!");
 
-            Pause();
+            //Pause();
+        }
+
+        private static void DisplayHelp()
+        {
+            Console.WriteLine("Invalid input.");
         }
 
         private static void Pause()

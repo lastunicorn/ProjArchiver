@@ -1,4 +1,6 @@
-- as a user i want to be able to archive each project individually and move it into the archive directory so that will not clutter the working directory. (5) (5h)
-- as a user i want to be able to restore an archived project back to working directory so that i can work in the project. (5)
-- as i user i want to be able to specify more then one working directory so that i would be able to keep projects in different locations. (5)
+- as a user i want to be able to archive each project individually and move it into the archive directory so that will not clutter the working directory. (5) (4h)
+- as a user i want to have a log file with information end errors. (1h)
+- as a user i want to be able to restore an archived project back to working directory so that i can work in the project. (5) (2h)
+- as a user i want to have a gui to easily archive and restore.
+- as a user i want to be able to specify more then one working directory so that i would be able to keep projects in different locations. (5)
 - as a user i want to be able to exclude specific directories from the working directory so that they will not appear in the list of projects. (2)
