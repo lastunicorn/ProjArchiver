@@ -59,7 +59,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProjArchive\ProjArchiver.csproj">
+    <ProjectReference Include="..\ProjArchiver\ProjArchiver.csproj">
       <Project>{07b87d49-3c78-4067-8b6b-3d8b7d827a52}</Project>
       <Name>ProjArchiver</Name>
     </ProjectReference>
