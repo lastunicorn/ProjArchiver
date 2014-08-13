@@ -79,7 +79,7 @@ namespace DustInTheWind.ProjArchiver.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The project with the same name is already uncompressed..
+        ///   Looks up a localized string similar to A project with the same name already exists in the working directory..
         /// </summary>
         internal static string Err_ProjectAlreadyExists {
             get {

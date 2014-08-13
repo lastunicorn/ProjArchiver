@@ -18,7 +18,7 @@ using NLog;
 
 namespace DustInTheWind.ProjArchiver.ConsoleApp.Flows
 {
-    class ArchiveFlow
+    class InitFlow
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -28,7 +28,7 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp.Flows
         private readonly IStorage storage;
         private readonly Config config;
 
-        public ArchiveFlow(ConsoleOptions consoleOptions, Config config, IStorage storage, IFileCompressor fileCompressor)
+        public InitFlow(ConsoleOptions consoleOptions, Config config, IStorage storage, IFileCompressor fileCompressor)
         {
             this.consoleOptions = consoleOptions;
             this.config = config;
@@ -58,7 +58,7 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp.Flows
                 Description = description
             };
 
-            archiver.Archive();
+            archiver.Init();
 
             logger.Debug("Archive end");
         }

@@ -16,9 +16,9 @@
 
 using System;
 
-namespace DustInTheWind.ProjArchiver.ConsoleApp
+namespace DustInTheWind.ProjArchiver.ConsoleApp.Flows
 {
-    class AppView
+    class MainFlowView
     {
         public void WriteStartApp()
         {

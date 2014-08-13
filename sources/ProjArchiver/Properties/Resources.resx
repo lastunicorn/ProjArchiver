@@ -124,7 +124,7 @@
     <value>The ArchivesDirectoryFullPath was not specified.</value>
   </data>
   <data name="Err_ProjectAlreadyExists" xml:space="preserve">
-    <value>The project with the same name is already uncompressed.</value>
+    <value>A project with the same name already exists in the working directory.</value>
   </data>
   <data name="Err_ProjectDirectoryNotSpecified" xml:space="preserve">
     <value>ProjectDirectoryFullPath was not specified.</value>

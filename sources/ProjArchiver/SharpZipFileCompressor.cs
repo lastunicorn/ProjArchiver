@@ -30,13 +30,11 @@ namespace DustInTheWind.ProjArchiver
 
         public void Compress(string sourceDirectoryFullPath, string destinationArchiveFileFullPath)
         {
-            //ZipFile.CreateFromDirectory(sourceDirectoryFullPath, destinationArchiveFileFullPath, CompressionLevel.Optimal, true);
             Zip(sourceDirectoryFullPath, destinationArchiveFileFullPath);
         }
 
         public void Decompress(string sourceArchiveFileFullPath, string destinationDirectoryFullPath)
         {
-            //ZipFile.ExtractToDirectory(sourceArchiveFileFullPath, destinationDirectoryFullPath);
             ExtractZipFile(sourceArchiveFileFullPath, destinationDirectoryFullPath);
         }
 
@@ -131,12 +129,12 @@ namespace DustInTheWind.ProjArchiver
                 //{
                 //    zf.Password = password;     // AES encrypted entries are handled automatically
                 //}
+
                 foreach (ZipEntry zipEntry in zf)
                 {
                     if (!zipEntry.IsFile)
-                    {
-                        continue;           // Ignore directories
-                    }
+                        continue; // Ignore directories
+
                     String entryFileName = zipEntry.Name;
                     // to remove the folder from the entry:- entryFileName = Path.GetFileName(entryFileName);
                     // Optionally match entrynames against a selection list here to skip as desired.

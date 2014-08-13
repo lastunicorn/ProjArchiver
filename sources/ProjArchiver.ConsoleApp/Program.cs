@@ -20,8 +20,8 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp
     {
         static void Main(string[] args)
         {
-            App app = new App();
-            app.Run(args);
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Run(args);
         }
     }
 }

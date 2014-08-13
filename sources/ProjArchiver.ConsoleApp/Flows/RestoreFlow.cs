@@ -16,7 +16,7 @@
 
 using NLog;
 
-namespace DustInTheWind.ProjArchiver.ConsoleApp
+namespace DustInTheWind.ProjArchiver.ConsoleApp.Flows
 {
     class RestoreFlow
     {

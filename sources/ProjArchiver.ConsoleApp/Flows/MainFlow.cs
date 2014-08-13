@@ -15,33 +15,31 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using Ninject;
 using NLog;
 
-namespace DustInTheWind.ProjArchiver.ConsoleApp
+namespace DustInTheWind.ProjArchiver.ConsoleApp.Flows
 {
-    class App
+    class MainFlow
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly AppView view;
+        private readonly MainFlowView view;
+        private readonly ConsoleOptions consoleOptions;
+        private readonly IKernel ninjectKernel;
 
-        private Config config;
-        private Storage storage;
-        private SharpZipFileCompressor fileCompressor;
-        private ConsoleOptions consoleOptions;
-
-        public App()
+        public MainFlow(MainFlowView view, IKernel ninjectKernel, ConsoleOptions consoleOptions)
         {
-            view = new AppView();
+            this.ninjectKernel = ninjectKernel;
+            this.consoleOptions = consoleOptions;
+            this.view = view;
         }
 
-        public void Run(string[] args)
+        public void Execute()
         {
             try
             {
                 view.WriteStartApp();
-
-                CreateServices(args);
 
                 switch (consoleOptions.Action)
                 {
@@ -54,6 +52,7 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp
                         break;
 
                     case ConsoleAction.Init:
+                        RunInitFlow();
                         break;
 
                     default:
@@ -70,24 +69,22 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp
             view.WriteEndApp();
         }
 
+        private void RunInitFlow()
+        {
+            InitFlow initFlow = ninjectKernel.Get<InitFlow>();
+            initFlow.Execute();
+        }
+
         private void RunArchiveFlow()
         {
-            ArchiveFlow archiveFlow = new ArchiveFlow(consoleOptions, config, storage, fileCompressor);
+            ArchiveFlow archiveFlow = ninjectKernel.Get<ArchiveFlow>();
             archiveFlow.Execute();
         }
 
         private void RunRestoreFlow()
         {
-            RestoreFlow restoreFlow = new RestoreFlow(consoleOptions, config, storage, fileCompressor);
+            RestoreFlow restoreFlow = ninjectKernel.Get<RestoreFlow>();
             restoreFlow.Execute();
-        }
-
-        private void CreateServices(string[] args)
-        {
-            config = new Config();
-            storage = new Storage();
-            fileCompressor = new SharpZipFileCompressor();
-            consoleOptions = new ConsoleOptions(args);
         }
     }
 }

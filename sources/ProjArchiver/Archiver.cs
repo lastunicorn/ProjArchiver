@@ -62,9 +62,26 @@ namespace DustInTheWind.ProjArchiver
             projectArchiveDirectoryFullPath = Path.Combine(ArchivesDirectoryFullPath, projectDirectoryName);
 
             CreateArchiveDirectory();
-            CreateArchiveFile();
             CreateArchiveInfoFile();
+            CreateArchiveFile();
             DeleteProjectDirectory();
+        }
+
+        public void Init()
+        {
+            if (string.IsNullOrEmpty(ArchivesDirectoryFullPath))
+                throw new ProjArchiveException(Resources.Err_ArchivesDirectoryNotSpecified);
+
+            if (string.IsNullOrEmpty(ProjectDirectoryFullPath))
+                throw new ProjArchiveException(Resources.Err_ProjectDirectoryNotSpecified);
+
+            logger.Info("Initializing archive directory '{0}'.", projectArchiveDirectoryFullPath);
+
+            projectDirectoryName = Path.GetFileName(ProjectDirectoryFullPath);
+            projectArchiveDirectoryFullPath = Path.Combine(ArchivesDirectoryFullPath, projectDirectoryName);
+
+            CreateArchiveDirectory();
+            CreateArchiveInfoFile();
         }
 
         private void CreateArchiveDirectory()

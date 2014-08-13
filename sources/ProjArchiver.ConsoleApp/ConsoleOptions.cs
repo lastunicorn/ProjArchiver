@@ -46,6 +46,18 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp
 
                     break;
 
+                case "--init":
+                case "-i":
+                    Action = ConsoleAction.Init;
+
+                    if (args.Count > 1)
+                        ProjectDirectory = args[1];
+
+                    if (args.Count > 2)
+                        Description = args[2];
+
+                    break;
+
                 case "--restore":
                 case "-r":
                     Action = ConsoleAction.Restore;
