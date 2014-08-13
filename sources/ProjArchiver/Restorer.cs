@@ -56,7 +56,7 @@ namespace DustInTheWind.ProjArchiver
             if (string.IsNullOrEmpty(WorkDirectoryFullPath))
                 throw new ProjArchiveException(Resources.Err_WorkDirectoryNotSpecified);
 
-            logger.Info("Restoring project '{0}'.", ProjectName);
+            logger.Info("Restoring project '{0}' into directory '{1}'.", ProjectName, WorkDirectoryFullPath);
 
             archiveFileFullPath = Path.Combine(ArchivesDirectoryFullPath, ProjectName + Path.DirectorySeparatorChar + ProjectName + fileCompressor.DefaultExtension);
 
