@@ -63,7 +63,16 @@ namespace DustInTheWind.ProjArchiver
         private static int CalculateFolderOffset(string folderName)
         {
             folderName = Path.GetDirectoryName(folderName);
-            return folderName.Length + (folderName.EndsWith("\\") ? 0 : 1);
+
+            int folderNameLength = folderName.Length;
+
+            if (folderNameLength == 0)
+                return 0;
+
+            if (!folderName.EndsWith("\\"))
+                folderNameLength++;
+
+            return folderNameLength;
         }
 
         // Recurses down the folder structure
