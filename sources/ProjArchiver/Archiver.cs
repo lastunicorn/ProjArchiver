@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using System.Xml.Serialization;
 using DustInTheWind.ProjArchiver.Properties;
-using JetBrains.Annotations;
 using NLog;
 
 namespace DustInTheWind.ProjArchiver
@@ -73,7 +72,6 @@ namespace DustInTheWind.ProjArchiver
             logger.Info("Creating archive directory: '{0}'.", projectArchiveDirectoryFullPath);
 
             if (!storage.ExistsDirectory(projectArchiveDirectoryFullPath))
-                //throw new ProjArchiveException(Resources.Err_ProjectArchiveDirectoryAlreadyExists);
                 storage.CreateDirectory(projectArchiveDirectoryFullPath);
         }
 

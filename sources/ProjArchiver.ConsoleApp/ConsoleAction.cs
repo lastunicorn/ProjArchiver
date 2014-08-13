@@ -16,12 +16,11 @@
 
 namespace DustInTheWind.ProjArchiver.ConsoleApp
 {
-    class Program
+    enum ConsoleAction
     {
-        static void Main(string[] args)
-        {
-            App app = new App();
-            app.Run(args);
-        }
+        None,
+        Archive,
+        Restore,
+        Init
     }
 }

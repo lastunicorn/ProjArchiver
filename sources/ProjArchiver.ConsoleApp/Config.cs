@@ -14,10 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.ProjArchiver
+using DustInTheWind.ProjArchiver.ConsoleApp.Properties;
+
+namespace DustInTheWind.ProjArchiver.ConsoleApp
 {
     public class Config
     {
+        public Config()
+        {
+            ArchivesDirectory = Settings.Default.ArchivesDirectory;
+        }
+
         public string ArchivesDirectory { get; set; }
     }
 }

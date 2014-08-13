@@ -14,25 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.IO.Compression;
+using System;
 
-namespace DustInTheWind.ProjArchiver
+namespace DustInTheWind.ProjArchiver.ConsoleApp
 {
-    public class FileCompressor : IFileCompressor
+    class AppView
     {
-        public string DefaultExtension
+        public void WriteStartApp()
         {
-            get { return ".zip"; }
+            Console.WriteLine("ProjArchiver");
+            Console.WriteLine("===============================================================================");
+            Console.WriteLine();
         }
 
-        public void Compress(string sourceDirectoryFullPath, string destinationArchiveFileFullPath)
+        public void DisplayHelp()
         {
-            ZipFile.CreateFromDirectory(sourceDirectoryFullPath, destinationArchiveFileFullPath, CompressionLevel.Optimal, true);
+            Console.WriteLine("Invalid input.");
         }
 
-        public void Decompress(string sourceArchiveFileFullPath, string destinationDirectoryFullPath)
+        public void WriteEndApp()
         {
-            ZipFile.ExtractToDirectory(sourceArchiveFileFullPath, destinationDirectoryFullPath);
+            Console.WriteLine();
+            Console.WriteLine("Bye!");
         }
     }
 }

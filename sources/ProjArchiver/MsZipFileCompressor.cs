@@ -14,14 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.ProjArchiver.ConsoleApp
+using System.IO.Compression;
+
+namespace DustInTheWind.ProjArchiver
 {
-    class Program
+    public class MsZipFileCompressor : IFileCompressor
     {
-        static void Main(string[] args)
+        public string DefaultExtension
         {
-            App app = new App();
-            app.Run(args);
+            get { return ".zip"; }
+        }
+
+        public void Compress(string sourceDirectoryFullPath, string destinationArchiveFileFullPath)
+        {
+            ZipFile.CreateFromDirectory(sourceDirectoryFullPath, destinationArchiveFileFullPath, CompressionLevel.Optimal, true);
+        }
+
+        public void Decompress(string sourceArchiveFileFullPath, string destinationDirectoryFullPath)
+        {
+            ZipFile.ExtractToDirectory(sourceArchiveFileFullPath, destinationDirectoryFullPath);
         }
     }
 }

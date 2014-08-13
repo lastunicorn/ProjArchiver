@@ -1,0 +1,1 @@
+DustInTheWind.ProjArchiver.ConsoleApp.exe -a "c:\temp\projects\myproj" "some description here"
