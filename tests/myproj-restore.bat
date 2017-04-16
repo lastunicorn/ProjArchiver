@@ -1,0 +1,1 @@
+DustInTheWind.ProjArchiver.ConsoleApp.exe -r "myproj" "c:\temp\projects"

@@ -21,16 +21,15 @@ using Xunit;
 
 namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
 {
-    public class ArchiveTests
+    public class InitTests
     {
         private readonly Mock<IStorage> storage;
         private readonly Archiver archiver;
-        private readonly Mock<IFileCompressor> fileCompressor;
 
-        public ArchiveTests()
+        public InitTests()
         {
             storage = new Mock<IStorage>();
-            fileCompressor = new Mock<IFileCompressor>();
+            Mock<IFileCompressor> fileCompressor = new Mock<IFileCompressor>();
             fileCompressor.SetupGet(x => x.DefaultExtension).Returns(".zip");
 
             archiver = new Archiver(storage.Object, fileCompressor.Object);
@@ -42,7 +41,7 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
             archiver.ArchivesDirectoryFullPath = null;
             archiver.ProjectDirectoryFullPath = @"c:\path\to\projects\MyProject";
 
-            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
+            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Init());
 
             Assert.Equal(Resources.Err_ArchivesDirectoryNotSpecified, exception.Message);
         }
@@ -53,7 +52,7 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
             archiver.ArchivesDirectoryFullPath = string.Empty;
             archiver.ProjectDirectoryFullPath = @"c:\path\to\projects\MyProject";
 
-            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
+            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Init());
 
             Assert.Equal(Resources.Err_ArchivesDirectoryNotSpecified, exception.Message);
         }
@@ -64,7 +63,7 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
             archiver.ArchivesDirectoryFullPath = @"c:\path\to\archives";
             archiver.ProjectDirectoryFullPath = null;
 
-            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
+            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Init());
 
             Assert.Equal(Resources.Err_ProjectDirectoryNotSpecified, exception.Message);
         }
@@ -75,7 +74,7 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
             archiver.ArchivesDirectoryFullPath = @"c:\path\to\archives";
             archiver.ProjectDirectoryFullPath = string.Empty;
 
-            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
+            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Init());
 
             Assert.Equal(Resources.Err_ProjectDirectoryNotSpecified, exception.Message);
         }
@@ -88,7 +87,7 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
             archiver.ArchivesDirectoryFullPath = @"c:\path\to\archives";
             archiver.ProjectDirectoryFullPath = @"c:\path\to\projects\MyProject";
 
-            archiver.Archive();
+            archiver.Init();
 
             storage.Verify(x => x.CreateDirectory(@"c:\path\to\archives\MyProject"), Times.Never());
         }
@@ -101,64 +100,25 @@ namespace DustInTheWind.ProjArchiver.Tests.ArchiverTests
             archiver.ArchivesDirectoryFullPath = @"c:\path\to\archives";
             archiver.ProjectDirectoryFullPath = @"c:\path\to\projects\MyProject";
 
-            archiver.Archive();
+            archiver.Init();
 
             storage.Verify(x => x.CreateDirectory(@"c:\path\to\archives\MyProject"), Times.Once());
-        }
-
-        [Fact]
-        public void throws_if_ProjectArchiveFile_already_exists()
-        {
-            storage.Setup(x => x.OpenFileToWrite(It.IsAny<string>())).Returns(Stream.Null);
-            storage.Setup(x => x.ExistsFile(@"d:\Archives\MyProject\MyProject.zip")).Returns(true);
-            archiver.ArchivesDirectoryFullPath = @"d:\Archives";
-            archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
-
-            ProjArchiveException exception = Assert.Throws<ProjArchiveException>(() => archiver.Archive());
-
-            Assert.Equal(DustInTheWind.ProjArchiver.Properties.Resources.Err_ArchiveAlreadyExists, exception.Message);
-        }
-
-        [Fact]
-        public void uses_fileCompressor_to_compress_the_project_directory()
-        {
-            storage.Setup(x => x.OpenFileToWrite(It.IsAny<string>())).Returns(Stream.Null);
-            fileCompressor.SetupGet(x => x.DefaultExtension).Returns(".zip");
-            archiver.ArchivesDirectoryFullPath = @"d:\Archives";
-            archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
-
-            archiver.Archive();
-
-            fileCompressor.Verify(x => x.Compress(@"d:\Projects\MyProject", @"d:\Archives\MyProject\MyProject.zip"), Times.Once());
         }
 
         [Fact]
         public void creates_an_archive_info_file()
         {
             MemoryStream descriptionFileStream = new MemoryStream();
-            storage.Setup(x => x.OpenFileToWrite(@"d:\Archives\MyProject\MyProject.xml")).Returns(descriptionFileStream);
-            archiver.ArchivesDirectoryFullPath = @"d:\Archives";
-            archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
+            storage.Setup(x => x.OpenFileToWrite(@"c:\path\to\archives\MyProject\MyProject.xml")).Returns(descriptionFileStream);
+            archiver.ArchivesDirectoryFullPath = @"c:\path\to\archives";
+            archiver.ProjectDirectoryFullPath = @"c:\path\to\projects\MyProject";
             archiver.Description = "Description";
 
-            archiver.Archive();
+            archiver.Init();
 
             descriptionFileStream.Seek(0, SeekOrigin.Begin);
             XmlAsserter xmlAsserter = new XmlAsserter(descriptionFileStream);
             xmlAsserter.NodeValue("/ArchiveInfo/Description", "Description");
-        }
-
-        [Fact]
-        public void deletes_project_directory()
-        {
-            storage.Setup(x => x.OpenFileToWrite(It.IsAny<string>())).Returns(Stream.Null);
-            storage.Setup(x => x.ExistsFile(@"d:\Archives\MyProject\MyProject.zip")).Returns(false);
-            archiver.ArchivesDirectoryFullPath = @"d:\Archives";
-            archiver.ProjectDirectoryFullPath = @"d:\Projects\MyProject";
-
-            archiver.Archive();
-
-            storage.Verify(x => x.RemoveDirectory(@"d:\Projects\MyProject"), Times.Once());
         }
     }
 }

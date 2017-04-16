@@ -1,0 +1,10 @@
+1) arrange
+copy "projects" and "archives" directories into c:\temp
+copy "myproj-archive.bat" and "myproj-restore.bat" files into the ProjArchiver application directory. (where is the exe file)
+
+2) act
+run myproj-archive.bat
+
+3) assert
+verify that the "c:\temp\archives\myproj" directory was created. it should contain the "myproj.zip" and "myproj.xml" files.
+verify thet the "c"\temp\projects\myproj" directory was deleted.

@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using System.Xml.Serialization;
 using DustInTheWind.ProjArchiver.Properties;
-using JetBrains.Annotations;
 using NLog;
 
 namespace DustInTheWind.ProjArchiver
@@ -63,9 +62,26 @@ namespace DustInTheWind.ProjArchiver
             projectArchiveDirectoryFullPath = Path.Combine(ArchivesDirectoryFullPath, projectDirectoryName);
 
             CreateArchiveDirectory();
-            CreateArchiveFile();
             CreateArchiveInfoFile();
+            CreateArchiveFile();
             DeleteProjectDirectory();
+        }
+
+        public void Init()
+        {
+            if (string.IsNullOrEmpty(ArchivesDirectoryFullPath))
+                throw new ProjArchiveException(Resources.Err_ArchivesDirectoryNotSpecified);
+
+            if (string.IsNullOrEmpty(ProjectDirectoryFullPath))
+                throw new ProjArchiveException(Resources.Err_ProjectDirectoryNotSpecified);
+
+            logger.Info("Initializing archive directory '{0}'.", projectArchiveDirectoryFullPath);
+
+            projectDirectoryName = Path.GetFileName(ProjectDirectoryFullPath);
+            projectArchiveDirectoryFullPath = Path.Combine(ArchivesDirectoryFullPath, projectDirectoryName);
+
+            CreateArchiveDirectory();
+            CreateArchiveInfoFile();
         }
 
         private void CreateArchiveDirectory()
@@ -73,7 +89,6 @@ namespace DustInTheWind.ProjArchiver
             logger.Info("Creating archive directory: '{0}'.", projectArchiveDirectoryFullPath);
 
             if (!storage.ExistsDirectory(projectArchiveDirectoryFullPath))
-                //throw new ProjArchiveException(Resources.Err_ProjectArchiveDirectoryAlreadyExists);
                 storage.CreateDirectory(projectArchiveDirectoryFullPath);
         }
 

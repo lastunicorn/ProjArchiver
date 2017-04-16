@@ -1,4 +1,4 @@
-// ProjArchiver
+﻿// ProjArchiver
 // Copyright (C) 2014 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,10 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.ProjArchiver
+using System;
+
+namespace DustInTheWind.ProjArchiver.ConsoleApp.Flows
 {
-    public class Config
+    class MainFlowView
     {
-        public string ArchivesDirectory { get; set; }
+        public void WriteStartApp()
+        {
+            Console.WriteLine("ProjArchiver");
+            Console.WriteLine("===============================================================================");
+            Console.WriteLine();
+        }
+
+        public void DisplayHelp()
+        {
+            Console.WriteLine("Invalid input.");
+        }
+
+        public void WriteEndApp()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Bye!");
+        }
     }
 }

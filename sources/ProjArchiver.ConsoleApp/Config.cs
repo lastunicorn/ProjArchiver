@@ -1,4 +1,4 @@
-﻿// ProjArchiver
+// ProjArchiver
 // Copyright (C) 2014 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,25 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.IO.Compression;
+using DustInTheWind.ProjArchiver.ConsoleApp.Properties;
 
-namespace DustInTheWind.ProjArchiver
+namespace DustInTheWind.ProjArchiver.ConsoleApp
 {
-    public class FileCompressor : IFileCompressor
+    public class Config
     {
-        public string DefaultExtension
+        public Config()
         {
-            get { return ".zip"; }
+            ArchivesDirectory = Settings.Default.ArchivesDirectory;
         }
 
-        public void Compress(string sourceDirectoryFullPath, string destinationArchiveFileFullPath)
-        {
-            ZipFile.CreateFromDirectory(sourceDirectoryFullPath, destinationArchiveFileFullPath, CompressionLevel.Optimal, true);
-        }
-
-        public void Decompress(string sourceArchiveFileFullPath, string destinationDirectoryFullPath)
-        {
-            ZipFile.ExtractToDirectory(sourceArchiveFileFullPath, destinationDirectoryFullPath);
-        }
+        public string ArchivesDirectory { get; set; }
     }
 }
