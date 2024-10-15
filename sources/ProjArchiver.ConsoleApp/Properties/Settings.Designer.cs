@@ -25,7 +25,7 @@ namespace DustInTheWind.ProjArchiver.ConsoleApp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\temp\\archives")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\ProjectArchives")]
         public string ArchivesDirectory {
             get {
                 return ((string)(this["ArchivesDirectory"]));

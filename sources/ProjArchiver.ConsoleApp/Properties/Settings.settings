@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ArchivesDirectory" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\temp\archives</Value>
+      <Value Profile="(Default)">c:\ProjectArchives</Value>
     </Setting>
   </Settings>
 </SettingsFile>
